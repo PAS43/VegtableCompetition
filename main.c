@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 
 #define MAX_LINE 80
@@ -8,12 +9,11 @@ extern int errno;
 char* fileCharBuffer;
 char date[MAX_LINE];
 char competition[MAX_LINE];
+
+int endOfLine = 0;
+int startOfLine = 0;
 int fileLength = 0;
 int amountOfLines = 0;
-
-typedef struct line{
-    char lineData[MAX_LINE];
-}line;
 
 typedef struct node {
     char name[50];
@@ -70,13 +70,6 @@ void createFileBuffer(int fileSize) {
     fileCharBuffer = malloc(sizeof (char) * fileSize);
 }
 
-void createLineBuffer(){
-    //fileLineBuffer = malloc(sizeof(line) * amountOfLines);
-}
-
-void fillLineBuffer(){
-    char lines[amountOfLines][MAX_LINE];
-}
 
 void loadFileIntoBuffer(FILE* input, int filesize) {
     char c;
@@ -108,16 +101,33 @@ void getAmountOfLines(){
     
 }
 
+void derp(){
+    char *arr[MAX_LINE];
+    char *loc = strchr(fileCharBuffer, '\n');
+    endOfLine = loc - fileCharBuffer;
+    for(int i = startOfLine; i < endOfLine; i++){
+        arr[i] = fileCharBuffer[i];
+    }
+    for(int i = 0; i < endOfLine; i++)
+    {
+        printf("%c", arr[i]);
+    }
+    memset(fileCharBuffer, '0', endOfLine);
+    startOfLine += endOfLine;
+}
+
 int main() {
     fileLength = getFileSize(open());
     createFileBuffer(fileLength);
     loadFileIntoBuffer(open(), fileLength);
     getTitleAndDate();
     getAmountOfLines();
-    fillLineBuffer();
     
     printf("comp: %s\ndate: %s\n", competition, date);
-    printf("lines: %d", amountOfLines);
+    printf("lines: %d\n", amountOfLines);
+    
+    derp();
+    derp();
     
     return 0;
 }
