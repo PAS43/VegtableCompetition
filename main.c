@@ -6,6 +6,7 @@
 #define MAX_LINE 80
 
 extern int errno;
+char **fileArr;
 char* fileCharBuffer;
 char date[MAX_LINE];
 char competition[MAX_LINE];
@@ -101,19 +102,22 @@ void getAmountOfLines(){
     
 }
 
-void derp(){
-    char *arr[MAX_LINE];
-    char *loc = strchr(fileCharBuffer, '\n');
-    endOfLine = loc - fileCharBuffer;
-    for(int i = startOfLine; i < endOfLine; i++){
-        arr[i] = fileCharBuffer[i];
+void de(FILE* input){
+    fileArr = malloc(amountOfLines * sizeof(char*));
+    for(int i = 0; i < amountOfLines; i++){
+        fileArr[i] = malloc(sizeof(char) * MAX_LINE);
+        fgets(fileArr[i], MAX_LINE, input); 
     }
-    for(int i = 0; i < endOfLine; i++)
-    {
-        printf("%c", arr[i]);
-    }
-    memset(fileCharBuffer, '0', endOfLine);
-    startOfLine += endOfLine;
+    
+    printf("%s", fileArr[30]);
+    
+    
+    
+//    char c;
+//    while((c = fgetc(input)) != EOF){
+//        //if(c == '\n')
+//            
+//    }
 }
 
 int main() {
@@ -126,8 +130,8 @@ int main() {
     printf("comp: %s\ndate: %s\n", competition, date);
     printf("lines: %d\n", amountOfLines);
     
-    derp();
-    derp();
+    de(open());
+    
     
     return 0;
 }
